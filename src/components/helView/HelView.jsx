@@ -105,8 +105,20 @@ const HelvetiaCompliancyCheck = () => {
   const [key, setKey] = useState(0); // Key to reset the DataGrid
 
   const onDrop = (acceptedFiles) => {
-    console.log("Accepted files:", acceptedFiles);
-    setFilename(acceptedFiles[0].name);
+    try {
+      console.log("Accepted files:", acceptedFiles);
+
+      const currentFile = acceptedFiles[0];
+      const allowedTypes = ["text/plain"];
+
+      if (!allowedTypes.includes(currentFile.type)) {
+        throw new Error("Invalid file type. Only text files are allowed.");
+      }
+
+      setFilename(currentFile.name);
+    } catch (error) {
+      alert("only text files are allowed")
+    }
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
@@ -128,7 +140,7 @@ const HelvetiaCompliancyCheck = () => {
   const startIndex = (page - 1) * pageSize;
   const endIndex = Math.min(page * pageSize, totalRows);
 
-  console.log("start - end Index ", startIndex, endIndex);
+  // console.log("start - end Index ", startIndex, endIndex);
 
   const rowsperpageHandler = (e) => {
     parseInt(setRowsPerPage(e.target.value));
@@ -139,22 +151,24 @@ const HelvetiaCompliancyCheck = () => {
     <>
       <div
         className={classes.theader}
-        // sx={{ display: openDetails ? "none" : "flex" }}
+      // sx={{ display: openDetails ? "none" : "flex" }}
       >
         <p>List of EDC Files</p>
 
-        <div className={classes.theaderbtngroup} {...getRootProps()}>
-          <input {...getInputProps()} />
-          <button>
-            {!filename && "Drag and drop or Choose files"}{" "}
-            {filename.length > 20
-              ? filename.substring(0, 20) + "..."
-              : filename}
-          </button>
-          <button>UPLOAD FILE</button>
+        <div className={classes.theaderbtngroup} >
+          <div {...getRootProps()}>
+            <input {...getInputProps()} />
+            <button>
+              {!filename && "Drag and drop or Choose files"}{" "}
+              {filename.length > 20
+                ? filename.substring(0, 20) + "..."
+                : filename}
+            </button>
+          </div>
+          <button onClick={() => alert("Hi")}>UPLOAD FILE</button>
         </div>
       </div>
-      <div
+      {/* <div
         className={classes.pageWrapper}
         // sx={{ display: openDetails ? "none" : "flex" }}
       >
@@ -175,8 +189,8 @@ const HelvetiaCompliancyCheck = () => {
           disableColumnMenu={true}
           hideFooter
         />
-      </div>
-      <div
+      </div> */}
+      {/* <div
         className={classes.pagination_container}
         // sx={{ display: openDetails ? "none" : "flex" }}
       >
@@ -262,7 +276,7 @@ const HelvetiaCompliancyCheck = () => {
             <p>of {rows.length}</p>
           </div>
         </div>
-      </div>
+      </div> */}
 
     </>
   );

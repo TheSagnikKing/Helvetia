@@ -5,8 +5,8 @@ import HelView from './components/helView/HelView'
 const App = () => {
   return (
     <>
-    <HelDetails/>
-    {/* <HelView/> */}
+    {/* <HelDetails/> */}
+    <HelView/>
     </>
   )
 }
